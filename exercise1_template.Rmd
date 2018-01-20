@@ -1,0 +1,112 @@
+---
+title: "Exercise 1"
+author: "YOUR NAME AND PAIR NUMBER"
+date: "31 de enero de 2016"
+output: html_document
+---
+
+### Introduction
+
+Wikipedia is a free encyclopedia written collaboratively by volunteers around the world. A small part of Wikipedia contributors are administrators, who are users with access to additional technical features that aid in maintenance. In order for a user to become an administrator a Request for adminship (RfA) is issued and the Wikipedia community via a public discussion or a vote decides who to promote to adminship. Using a complete dump of Wikipedia page edit history (from January 3 2008) we extracted all administrator elections and vote history data. This gave us nearly 2,800 elections with around 100,000 total votes and about 7,000 users participating in the elections (either casting a vote or being voted on). Out of these 1,200 elections resulted in a successful promotion, while about 1,500 elections did not result in the promotion. About half of the votes in the dataset are by existing admins, while the other half comes from ordinary Wikipedia users.
+
+### Exercise 1
+
+In this exercise, you will learn how to use the Igraph package, a powerful tool to analyze and visualize networks in R. The main goal in this exercise is to acquire programming abilities to extract value from relational data. The exercise is divided in 10 sections. You will receive a grade from 0 to ten. The exercise can be done individually or in pairs. Please, send an email with the members of the pair to allorente@faculty.ie.edu .
+
+To find more information about R markdown, see http://rmarkdown.rstudio.com/articles.html.
+
+<span style="color:blue">
+The answers in every section, please code it in blue
+</span>
+
+### Load data
+
+We have two datasets: one for loading metadata about elections and the other one to load the adjacency list. Columns in votings dataset are: "voter"-"user"-"timestamp"-"vote". 
+In this section you will show the ten first lines of every loaded dataset. 
+
+```{r}
+# load raw data files
+metadata<-read.table("metadata.txt",sep=";",stringsAsFactors = F,header=F,quote="")
+# setting headers
+colnames(metadata)<-c("user","nominator","deadline","result")
+head(metadata)
+```
+
+```{r}
+#CHUNK 1: do the same for the votings file.
+```
+
+### Build the network object
+
+On this chunk we create the graph object by using the function graph.edgelist and then we set the attributes "vote" and "timestamp" to the edges. Maybe this piece of documentation is useful for this purpose http://www.inside-r.org/packages/cran/igraph/docs/attributes. After creating the graph object, use the summary function to generate the following output:
+
+```{r}
+#CHUNK 2: generate the graph object and visualize the summary
+```
+
+```{r}
+summary(g)
+```
+
+What do all the elements in the output mean?
+
+### Degree distribution
+
+You have to plot here the degree distribution of the nodes in the network, a typical analysis to visually understand the heterogeneity of connections within the network. You have to analyze the node degree distribution in three different ways: general degree, indegree and outdegree. To do this, use the degree function (http://www.inside-r.org/packages/cran/igraph/docs/degree) and the plot function. Consider using logarithmic scales in the plot function to get a better visualization. 
+
+```{r}
+#CHUNK 3: compute the three types of degree methods and plot the distribution
+```
+
+After analyzing the results, please answer the next question: Is it a scale-free network? Consider using the function power.law.fit to provide a statistically robust answer.
+
+```{r}
+#CHUNK 4: show statistically whether the distribution follows a power-law function.
+```
+
+### Reciprocity
+
+Search for the function to compute reciprocity in Igraph package. How many reciprocal links are there in this network? Analyze the results: Is reprocity a good measure to analyze this network?
+
+```{r}
+#CHUNK 5: compute reciprocity on voting network
+```
+
+### Connected components
+
+In this section we want to compute the connected components of the graph, that is, the subgraphs in which any two vertices are connected to each other by paths. Analyze what happens if directions of links are considered or not and explain why. You have to use the clusters function to get the connected components.
+
+```{r}
+#CHUNK 6: use the clusters function to get the connected components and analyze their size.
+```
+
+We want to keep the main connected component in a different variable. To do this, you have to use the function induced.subgraph and use the result of the clusters function.
+
+```{r}
+#CHUNK 7: create a new graph object g2 modelling the main connected component and show the summary of this object.
+```
+
+### Shortest paths
+
+Given two nodes, the shortest path betweem them is the subset of links connecting both nodes going from one node to another adjacent one. Two typical measures to analyze a graph is the average length of the shortest paths or the maximum one (diameter). Use the shortest.paths function to compute both average path length and diameter on the original graph. What value do you get? Can you explain why? Now compute both metrics for the main connected component of the previous section. Is it a small-world network? Explain similarities and differences.
+
+```{r}
+#CHUNK 8: compute Avg. path length and diameter for both the original graph and the main connected component.
+```
+
+### Centrality
+
+There are many ways of computing centrality. In this section we will compare two of the most widely used methods: degree and betweenness. Ignore directions of edges in this section. What are the theoretical differences comparing these two methods? Analyze the differences based on the results.
+
+```{r}
+#CHUNK 9: compute degree and betweenness per node in order to analyze the differences between these two algorithms.
+```
+
+
+### Introduction to graph visualization
+
+In this final section we will explore how to visualize networks in R. We are going to use a layout, layout.lgl, to place the nodes and we are going to colour them depending on they were i) candidates and accepted as administrators (green) ii) candidates and weren't accepted as administrator (red) iii) nominators (blue) or iv) only voters (yellow). 
+
+```{r}
+#CHUNK 10: use layout.lgl as layout and ifelse sentences to set the colour vector, then use the plot function to finally plot the graph.
+```
